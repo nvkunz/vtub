@@ -1,0 +1,30 @@
+{
+	"Type": "Live2D Expression",
+	"Parameters": [
+		{
+			"Id": "pose4",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "accs7",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "accs3",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "accs6",
+			"Value": 1,
+			"Blend": "Add"
+		},
+		{
+			"Id": "accs5",
+			"Value": 1,
+			"Blend": "Add"
+		}
+	]
+}

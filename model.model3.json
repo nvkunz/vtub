@@ -1,0 +1,113 @@
+{
+	"Version": 3,
+	"FileReferences": {
+		"Moc": "model.moc3",
+		"Textures": [
+			"model.4096/texture_00.png",
+			"model.4096/texture_01.png",
+			"model.4096/texture_02.png",
+			"model.4096/texture_03.png",
+			"model.4096/texture_04.png"
+		],
+		"Physics": "model.physics3.json",
+		"DisplayInfo": "model.cdi3.json",
+		"Expressions": [
+			{
+				"Name": "02 dance 2b",
+				"File": "expressions/02 dance 2b.exp3.json"
+			},
+			{
+				"Name": "ACC 1 [WAVY MOUTH]",
+				"File": "exp & animation/ACC 1 [WAVY MOUTH].exp3.json"
+			},
+			{
+				"Name": "ACC 2 [BRB]",
+				"File": "exp & animation/ACC 2 [BRB].exp3.json"
+			},
+			{
+				"Name": "EXP 1 [LOVE]",
+				"File": "exp & animation/EXP 1 [LOVE].exp3.json"
+			},
+			{
+				"Name": "EXP 10 [YANDERE]",
+				"File": "exp & animation/EXP 10 [YANDERE].exp3.json"
+			},
+			{
+				"Name": "EXP 2 [EXCITED]",
+				"File": "exp & animation/EXP 2 [EXCITED].exp3.json"
+			},
+			{
+				"Name": "EXP 3 [SAD]",
+				"File": "exp & animation/EXP 3 [SAD].exp3.json"
+			},
+			{
+				"Name": "EXP 4 [POUT]",
+				"File": "exp & animation/EXP 4 [POUT].exp3.json"
+			},
+			{
+				"Name": "EXP 5 [ANGRY]",
+				"File": "exp & animation/EXP 5 [ANGRY].exp3.json"
+			},
+			{
+				"Name": "EXP 6 [SHOCKED]",
+				"File": "exp & animation/EXP 6 [SHOCKED].exp3.json"
+			},
+			{
+				"Name": "EXP 7 [CONFUSED]",
+				"File": "exp & animation/EXP 7 [CONFUSED].exp3.json"
+			},
+			{
+				"Name": "EXP 8 [SCARED]",
+				"File": "exp & animation/EXP 8 [SCARED].exp3.json"
+			},
+			{
+				"Name": "EXP 9 [BLUSH]",
+				"File": "exp & animation/EXP 9 [BLUSH].exp3.json"
+			},
+			{
+				"Name": "chibi",
+				"File": "exp & animation/chibi.exp3.json"
+			},
+			{
+				"Name": "idle",
+				"File": "expressions/idle.exp3.json"
+			},
+			{
+				"Name": "jump 2b",
+				"File": "expressions/jump 2b.exp3.json"
+			},
+			{
+				"Name": "normal jump",
+				"File": "expressions/normal jump.exp3.json"
+			},
+			{
+				"Name": "vampire mode",
+				"File": "exp & animation/vampire mode.exp3.json"
+			},
+			{
+				"Name": "walk 2b copy",
+				"File": "expressions/walk 2b copy.exp3.json"
+			},
+			{
+				"Name": "walk 2b",
+				"File": "expressions/walk 2b.exp3.json"
+			}
+		]
+	},
+	"Groups": [
+		{
+			"Target": "Parameter",
+			"Name": "LipSync",
+			"Ids": []
+		},
+		{
+			"Target": "Parameter",
+			"Name": "EyeBlink",
+			"Ids": [
+				"ParamEyeLOpen",
+				"ParamEyeROpen"
+			]
+		}
+	],
+	"HitAreas": []
+}

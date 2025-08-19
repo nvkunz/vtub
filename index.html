@@ -5,32 +5,69 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>VTuber Demo</title>
   <style>
-    html,body {height:100%;margin:0;background:#111;}
-    #stage {width:100%;height:100%;display:block;}
+    html,body { height:100%; margin:0; background:#111; }
+    #stage { width:100%; height:100%; display:block; }
+    #msg { position:fixed; left:12px; bottom:12px; padding:8px 10px; background:#000a; color:#fff; font:14px/1.45 system-ui,Arial; border-radius:8px; }
   </style>
 </head>
 <body>
   <canvas id="stage"></canvas>
+  <div id="msg" style="display:none"></div>
 
   <!-- PixiJS -->
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
-  <!-- pixi-live2d-display -->
+  <!-- pixi-live2d-display (UMD) -->
   <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
 
   <script>
     const app = new PIXI.Application({
       view: document.getElementById('stage'),
-      resizeTo: window,
+      resizeTo: window,          // otomatis full-screen & responsive
       backgroundAlpha: 0
     });
     const { Live2DModel } = PIXI.live2d;
+    const msg = document.getElementById('msg');
+
+    function note(t){
+      msg.style.display = 'block';
+      msg.textContent = t;
+    }
 
     (async () => {
-      // panggil model kamu
-      const model = await Live2DModel.from('./model.model3.json');
+      try {
+        // === PENTING: nama file sesuai repo kamu (di root) ===
+        const model = await Live2DModel.from('./model.model3.json');
 
-      model.anchor.set(0.5, 0.5);
-      function fit() {
-        model.position.set(app.renderer.width * 0.5, app.renderer.height * 0.9);
-        const s = Math.min(app.renderer.width, app.renderer.height) / 1800;
-        model.scale.s
+        // Posisi & skala awal
+        model.anchor.set(0.5, 0.5);
+        function fit() {
+          model.position.set(app.renderer.width * 0.5, app.renderer.height * 0.9);
+          const s = Math.min(app.renderer.width, app.renderer.height) / 1800;
+          model.scale.set(s);
+        }
+        fit();
+        window.addEventListener('resize', fit);
+
+        app.stage.addChild(model);
+
+        // Tracking mouse (kepala/mata mengikuti kursor)
+        app.view.addEventListener('pointermove', (e) => {
+          const r = app.view.getBoundingClientRect();
+          model.focus(e.clientX - r.left, e.clientY - r.top);
+        });
+
+        // Interaktif (opsional): tap untuk trigger motion "Tap" (jika ada)
+        model.interactive = true;
+        model.on('pointertap', () => model.motion('Tap', 0));
+
+        note('✅ Model loaded. Gerakkan mouse untuk tracking.');
+        setTimeout(()=> msg.style.display='none', 2000);
+
+      } catch (err) {
+        console.error(err);
+        note('❌ Gagal memuat model. Pastikan file "model.model3.json" ada di root & bisa diakses.');
+      }
+    })();
+  </script>
+</body>
+</html>

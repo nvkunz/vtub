@@ -7,7 +7,7 @@
   <style>
     html,body { height:100%; margin:0; background:#111; }
     #stage { width:100%; height:100%; display:block; }
-    #msg { position:fixed; left:12px; bottom:12px; padding:8px 10px; background:#000a; color:#fff; font:14px/1.45 system-ui,Arial; border-radius:8px; }
+    #msg { position:fixed; left:12px; bottom:12px; padding:8px 10px; background:#000c; color:#fff; font:14px/1.45 system-ui,Arial; border-radius:8px; max-width:70vw }
   </style>
 </head>
 <body>
@@ -18,27 +18,26 @@
   <script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
   <!-- pixi-live2d-display (UMD) -->
   <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+  <!-- 🔴 Tambahkan Cubism 4 runtime (WAJIB untuk .model3.json) -->
+  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js"></script>
 
   <script>
     const app = new PIXI.Application({
       view: document.getElementById('stage'),
-      resizeTo: window,          // otomatis full-screen & responsive
+      resizeTo: window,
       backgroundAlpha: 0
     });
+
     const { Live2DModel } = PIXI.live2d;
     const msg = document.getElementById('msg');
-
-    function note(t){
-      msg.style.display = 'block';
-      msg.textContent = t;
-    }
+    function note(t){ msg.style.display='block'; msg.textContent=t; }
 
     (async () => {
       try {
-        // === PENTING: nama file sesuai repo kamu (di root) ===
+        // file kamu ada di root repo dengan nama persis ini
         const model = await Live2DModel.from('./model.model3.json');
 
-        // Posisi & skala awal
+        // posisikan & skalakan
         model.anchor.set(0.5, 0.5);
         function fit() {
           model.position.set(app.renderer.width * 0.5, app.renderer.height * 0.9);
@@ -50,22 +49,21 @@
 
         app.stage.addChild(model);
 
-        // Tracking mouse (kepala/mata mengikuti kursor)
+        // mouse tracking
         app.view.addEventListener('pointermove', (e) => {
           const r = app.view.getBoundingClientRect();
           model.focus(e.clientX - r.left, e.clientY - r.top);
         });
 
-        // Interaktif (opsional): tap untuk trigger motion "Tap" (jika ada)
+        // opsional: tap motion kalau ada label "Tap"
         model.interactive = true;
         model.on('pointertap', () => model.motion('Tap', 0));
 
         note('✅ Model loaded. Gerakkan mouse untuk tracking.');
         setTimeout(()=> msg.style.display='none', 2000);
-
       } catch (err) {
         console.error(err);
-        note('❌ Gagal memuat model. Pastikan file "model.model3.json" ada di root & bisa diakses.');
+        note('❌ Gagal memuat model. Buka Console (Ctrl+Shift+I → Console) untuk lihat pesan error.');
       }
     })();
   </script>

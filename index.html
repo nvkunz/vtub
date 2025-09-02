@@ -1,71 +1,43 @@
-<!doctype html>
-<html lang="id">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>VTuber Demo</title>
-  <style>
-    html,body { height:100%; margin:0; background:#111; }
-    #stage { width:100%; height:100%; display:block; }
-    #msg { position:fixed; left:12px; bottom:12px; padding:8px 10px; background:#000c; color:#fff; font:14px/1.45 system-ui,Arial; border-radius:8px; max-width:70vw }
-  </style>
+    <title>Live2D Model</title>
+    <style>
+        body { margin: 0; padding: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
 </head>
 <body>
-  <canvas id="stage"></canvas>
-  <div id="msg" style="display:none"></div>
+    <canvas id="live2d-canvas"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@6.5.2/dist/browser/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
+    <script>
+        // Gunakan link relatif karena semua file berada di folder yang sama
+        const modelUrl = 'model.model3.json';
 
-  <!-- PixiJS -->
-  <script src="https://cdn.jsdelivr.net/npm/pixi.js@7/dist/pixi.min.js"></script>
-  <!-- pixi-live2d-display (UMD) -->
-  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/index.min.js"></script>
-  <!-- 🔴 Tambahkan Cubism 4 runtime (WAJIB untuk .model3.json) -->
-  <script src="https://cdn.jsdelivr.net/npm/pixi-live2d-display/dist/cubism4.min.js"></script>
+        (async function main() {
+            const app = new PIXI.Application({
+                view: document.getElementById('live2d-canvas'),
+                autoStart: true,
+                resizeTo: window
+            });
 
-  <script>
-    const app = new PIXI.Application({
-      view: document.getElementById('stage'),
-      resizeTo: window,
-      backgroundAlpha: 0
-    });
+            const model = await PIXI.live2d.Live2DModel.from(modelUrl);
 
-    const { Live2DModel } = PIXI.live2d;
-    const msg = document.getElementById('msg');
-    function note(t){ msg.style.display='block'; msg.textContent=t; }
+            app.stage.addChild(model);
 
-    (async () => {
-      try {
-        // file kamu ada di root repo dengan nama persis ini
-        const model = await Live2DModel.from('./model.model3.json');
+            // Menyesuaikan posisi model di tengah
+            model.scale.set(0.2); // Sesuaikan ukuran model
+            model.x = window.innerWidth / 2;
+            model.y = window.innerHeight / 2;
+            model.anchor.set(0.5, 0.5);
 
-        // posisikan & skalakan
-        model.anchor.set(0.5, 0.5);
-        function fit() {
-          model.position.set(app.renderer.width * 0.5, app.renderer.height * 0.9);
-          const s = Math.min(app.renderer.width, app.renderer.height) / 1800;
-          model.scale.set(s);
-        }
-        fit();
-        window.addEventListener('resize', fit);
-
-        app.stage.addChild(model);
-
-        // mouse tracking
-        app.view.addEventListener('pointermove', (e) => {
-          const r = app.view.getBoundingClientRect();
-          model.focus(e.clientX - r.left, e.clientY - r.top);
-        });
-
-        // opsional: tap motion kalau ada label "Tap"
-        model.interactive = true;
-        model.on('pointertap', () => model.motion('Tap', 0));
-
-        note('✅ Model loaded. Gerakkan mouse untuk tracking.');
-        setTimeout(()=> msg.style.display='none', 2000);
-      } catch (err) {
-        console.error(err);
-        note('❌ Gagal memuat model. Buka Console (Ctrl+Shift+I → Console) untuk lihat pesan error.');
-      }
-    })();
-  </script>
+            // Contoh interaksi sederhana: model mengikuti kursor
+            model.interactive = true;
+            model.on('pointerdown', (e) => {
+                model.motion('Tap', 0);
+            });
+        })();
+    </script>
 </body>
 </html>
